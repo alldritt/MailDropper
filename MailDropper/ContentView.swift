@@ -74,15 +74,28 @@ func describeMIMEFile(_ url: URL) throws -> String {
     return "    which starts with `\((try String(contentsOf: url)).components(separatedBy: "\n")[0])`"
      */
     
-    var object = [String:String]()
+    var object = [String:Any]()
     let mime = try MimeParser().parse(try String(contentsOf: url))
     
-    object["Body"] = try mime.decodedContentString()
-    object["Date"] = mime.header["Date"]?.body ?? ""
-    object["Subject"] = mime.header["Subject"]?.body ?? ""
-    object["From"] = mime.header["From"]?.body ?? ""
-    object["To"] = mime.header["To"]?.body ?? ""
-    object["Message-ID"] = mime.header["Message-ID"]?.body ?? ""
+    if let body = try mime.decodedContentString() {
+        object["Body"] = body
+        //object["Parts"] = [body]
+    }
+    else {
+        //  In a multi-part message, mime.decodedContentString is nil so we have to find the first multi-part body to use.
+        let parts = mime.encapsulatedMimes
+        
+        object["Body"] = try parts.first?.decodedContentString() ?? ""
+        //object["Parts"] = try parts.compactMap({ part in
+        //    try part.decodedContentString()
+        //})
+    }
+
+    object["Date"] = (mime.header["Date"]?.body ?? "").decodedFromUTF8Wrapping
+    object["Subject"] = (mime.header["Subject"]?.body ?? "").decodedFromUTF8Wrapping
+    object["From"] = (mime.header["From"]?.body ?? "").decodedFromUTF8Wrapping
+    object["To"] = (mime.header["To"]?.body ?? "").decodedFromUTF8Wrapping
+    object["Message-ID"] = (mime.header["Message-ID"]?.body ?? "").decodedFromUTF8Wrapping
     
     let jsonData = try JSONSerialization.data(withJSONObject: object)
     
