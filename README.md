@@ -2,7 +2,7 @@
 
 Mail Dropper is a prototype for a tool allowing Shortcuts workflows to operate on email messages.  
 
-This version is **ver** limited:
+This version is **very** limited:
 
 - it does not support multi-part messages
 - it invokes a shortcut named "Porocess Email"
