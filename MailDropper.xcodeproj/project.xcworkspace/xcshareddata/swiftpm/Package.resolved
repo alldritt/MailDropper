@@ -1,0 +1,15 @@
+{
+  "originHash" : "f809680f427d0c27dd5f3f1b141f9f7ab13813e3b2b8ab4fbd260bed80304add",
+  "pins" : [
+    {
+      "identity" : "mimeparser",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/miximka/MimeParser.git",
+      "state" : {
+        "revision" : "07eb0fc2f4386767ef8a8204963f8122a0889663",
+        "version" : "0.2.5"
+      }
+    }
+  ],
+  "version" : 3
+}
